@@ -1,25 +1,28 @@
 cmake_minimum_required(VERSION 3.14)
 
-# Build with C++ 17
+# Build with C++ 17.
 set(CMAKE_CXX_STANDARD 17)
 
-# set the project name
+# set the project name.
 project(test)
 
-# lots of warnings and all warnings as errors
+# Need a compilation database for clang-tidy.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Lots of warnings and all warnings as errors.
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
-# Create executable
+# Create executable.
 set(EXECUTABLE cpp_unit_tests.tsk)
 add_executable(${EXECUTABLE})
 
-# Add unit tests to executable
+# Add unit tests to executable.
 file (GLOB TEST_FILES CONFIGURE_DEPENDS
 	${CMAKE_CURRENT_SOURCE_DIR}/*.t.cpp
 )
 target_sources(${EXECUTABLE} PUBLIC unit_tests.cpp ${TEST_FILES})
 
-# Assuming gtest and gmock are installed under /usr/local/ 
-target_include_directories(${EXECUTABLE} PRIVATE /usr/local/include/) 
+# Assuming gtest and gmock are installed under /usr/local/.
+target_include_directories(${EXECUTABLE} PRIVATE /usr/local/include/)
 target_link_directories(${EXECUTABLE} PRIVATE /usr/local/lib/)
 target_link_libraries(${EXECUTABLE} PRIVATE gtest gmock)
